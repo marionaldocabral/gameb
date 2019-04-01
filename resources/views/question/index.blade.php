@@ -32,7 +32,7 @@
 					</a>					
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-warning" href="{!! url('/') !!}">
+					<a class="btn btn-warning" href="{!! url('/') !!}" style="color: white;">
 						< Voltar
 					</a>					
 				</div>				
@@ -45,6 +45,8 @@
 					<thead>
 					    <tr>
 						    <th scope="col">Perguntas ({!! sizeof($questions) !!})</th>
+						    <th scope="col">Nível</th>
+						    <th scope="col">Tema</th>
 						    <th scope="col">Ações</th>
 					    </tr>
 					</thead>
@@ -52,6 +54,14 @@
 						@foreach($questions as $question)
 						    <tr>
 							    <td>{!! $question->question !!}</td>
+							    <td>
+							    	@if($question->nivel == 0)
+							    		{!! 'Infantil' !!}
+							    	@elseif($question->nivel == 1)
+							    		{!! 'Adulto' !!}
+							    	@endif
+							    </td>
+							    <td>{!! $question->tema !!}</td>
 							    <td>
 							    	<a href = "{!! url('/question/' . $question->id . '/edit') !!}" title="Editar">
                                         <button class="btn btn-primary btn-sm">

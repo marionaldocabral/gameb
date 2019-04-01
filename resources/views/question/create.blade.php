@@ -13,6 +13,7 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
+
 <body>
 	<div class="container">
 		<div class="row">
@@ -23,7 +24,7 @@
 		<br>
 		<div class="row">
 			<div class="col">
-				<a class="btn btn-warning" href="{!! url('/question') !!}">
+				<a class="btn btn-warning" href="{!! url('/question') !!}" style="color: white;">
 					< Voltar
 				</a>
 			</div>			
@@ -33,6 +34,24 @@
 			<div class="col">
 				<form method="POST" action="{!! url('question') !!}">
 					{{ csrf_field() }}
+					<div class="form-group">
+					    <label for="nivel">Nível</label>
+					    <select class="form-control" id="nivel" name="nivel" required>
+					    	<option></option>
+					    	<option value="0">Infantil</option>
+					    	<option value="1">Adulto</option>
+					    </select>
+					</div>
+					<div class="form-group">
+					    <label for="nivel">Tema</label>
+					    <input type="checkbox" id="ck_tema" style="margin-left: 20px;">Novo
+					    <select class="form-control" id="tema" name="tema">
+					    	@foreach($temas as $tema)
+					    		<option>{!! $tema->tema !!}</option>
+					    	@endforeach
+					    </select>
+					    <p id="novo_tema"></p>
+					</div>
 					<div class="form-group">
 					    <label for="question">Pergunta</label>
 					    <input type="text" class="form-control" id="question" name="question" required>
@@ -63,10 +82,24 @@
 					    	<option>D</option>
 					    </select>					    
 					</div>
-					<button type="submit" class="btn btn-primary">+ Salvar</button>
+					<button type="submit" class="btn btn-primary" id="bt_salvar">+ Salvar</button>
 				</form>
 			</div>
 		</div>
 	</div>
+	<script>
+		$(document).ready(function(){
+			$('#ck_tema').click(function(){
+				if($(this).is(':checked') == true){
+					$('#tema').hide()
+					$('#novo_tema').html('<input type="text" class="form-control" id="novo_tema" name="tema" required>')
+				}
+				else{
+					$('#novo_tema').html('<p id="novo_tema"></p>')
+					$('#tema').show()
+				}
+			})			
+		})		
+	</script>
 </body>
 </html>

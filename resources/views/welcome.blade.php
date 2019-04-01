@@ -67,17 +67,46 @@
         </style>
     </head>
     <body>
-        <div style="width: 1200px; margin-left: auto; margin-right: auto; padding: 0px; text-align: center; padding-top: 200px;">
+        <div style="width: 1200px; margin-left: auto; margin-right: auto; padding: 0px; text-align: center; padding-top: 130px;">
             <img src="{!! url('santo.png') !!}">
             <div class="title m-b-md">
                 GameB
             </div>
 
-            <div class="links">                    
-                <a href="{!! url('home/child') !!}">Sou criança</a>
-                <a href="{!! url('home/adult') !!}">Sou Adulto</a>
-                <a href="{!! url('question') !!}">Configurar</a>
+            <div>
+                <form method="POST" action="{!! url('/home') !!}">
+                    {{ csrf_field() }}
+                    <label style="font-size: 1.5em;">Tema</label>
+                    <br>
+                    <select name="tema" style="width: 200px; padding: 3px; font-size: 1em; color: gray; margin-top: 5px;">
+                        @foreach($temas as $tema)
+                            <option>{!! $tema->tema !!}</option>
+                        @endforeach
+                    </select>
+                    <br><br>
+                    <label style="font-size: 1.5em;">Categoria</label>
+                    <br>
+                    <select name="nivel" style="width: 200px; padding: 3px; font-size: 1em; color: gray; margin-top: 5px;">
+                        <option value="child">Sou criança</option>
+                        <option value="adult">Sou adulto</option>
+                    </select>
+                    <br>
+                    @if(sizeof($temas) == 0)
+                        <button type="submit" style="margin-top: 20px; background: none; border: none; color: lightgray; font-size: 2em; text-transform: uppercase; font-style: italic; font-family: sans-serif;" disabled>
+                            Vamos lá!
+                        </button>
+                    @else
+                        <button type="submit" style="margin-top: 20px; background: none; border: none; color: gray; font-size: 2em; cursor: pointer; text-transform: uppercase; font-style: italic; font-family: sans-serif;" disabled>
+                            Vamos lá!
+                        </button>
+                    @endif
+                </form>
+                <div class="links" style="margin-top: 20px;">
+                    <a href="{!! url('question') !!}">Configurar</a>
+                </div>
             </div>
+            <br>
+            <p>Para tela cheia tecle "F11"</p>
         </div>
     </body>
 </html>

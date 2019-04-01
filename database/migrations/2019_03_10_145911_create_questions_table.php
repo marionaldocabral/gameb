@@ -16,6 +16,9 @@ class CreateQuestionsTable extends Migration
             $table->String('option_c');
             $table->String('option_d');
             $table->char('answer');
+            $table->integer('respondida');
+            $table->integer('nivel');
+            $table->String('tema');
             $table->timestamps();
         });
     }

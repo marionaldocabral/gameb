@@ -23,7 +23,7 @@
 		<br>
 		<div class="row">
 			<div class="col">
-				<a class="btn btn-warning" href="{!! url('/question') !!}">
+				<a class="btn btn-warning" href="{!! url('/question') !!}" style="color: white;">
 					< Voltar
 				</a>
 			</div>			
@@ -34,6 +34,29 @@
 				<form method="POST" action="{!! url('/question/' . $question->id) !!}">
 					{{ method_field('PATCH') }}
 					{{ csrf_field() }}
+					<div class="form-group">
+					    <label for="nivel">Nível</label>
+					    <select class="form-control" id="nivel" name="nivel" required>
+					    	@if($question->nivel == 0)
+					    		<option value="0">{!! 'Infantil' !!}</option>
+					    	@elseif($question->nivel == 1)
+					    		<option value="1">{!! 'Adulto' !!}</option>
+					    	@endif
+					    	<option value="0">Infantil</option>
+					    	<option value="1">Adulto</option>
+					    </select>
+					</div>
+					<div class="form-group">
+					    <label for="nivel">Tema</label>
+					    <input type="checkbox" id="ck_tema" style="margin-left: 20px;">Novo
+					    <select class="form-control" id="tema" name="tema">
+					    	<option>{!! $question->tema !!}</option>
+					    	@foreach($temas as $tema)
+					    		<option>{!! $tema->tema !!}</option>
+					    	@endforeach
+					    </select>
+					    <p id="novo_tema"></p>
+					</div>
 					<div class="form-group">
 					    <label for="question">Pergunta</label>
 					    <input type="text" class="form-control" id="question" name="question" value="{!! $question->question !!}" required>
@@ -69,5 +92,19 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		$(document).ready(function(){
+			$('#ck_tema').click(function(){
+				if($(this).is(':checked') == true){
+					$('#tema').hide()
+					$('#novo_tema').html('<input type="text" class="form-control" id="novo_tema" name="tema" required>')
+				}
+				else{
+					$('#novo_tema').html('<p id="novo_tema"></p>')
+					$('#tema').show()
+				}
+			})			
+		})		
+	</script>
 </body>
 </html>

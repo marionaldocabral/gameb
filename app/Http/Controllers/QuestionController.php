@@ -8,29 +8,38 @@ use Illuminate\Support\Facades\Response;
 
 class QuestionController extends Controller
 {
-    public function home_adult(){
-        $nivel = 'adult';
-        $qtd_perguntas = \App\Question::count('id');
-        return view('home', compact('nivel', 'qtd_perguntas'));
+    public function welcome(){
+        $temas = \App\Tema::all();
+        return view('welcome', compact('temas'));
     }
 
-    public function home_child(){
-        $nivel = 'child';
-        $qtd_perguntas = \App\Question::count('id');
-        return view('home', compact('nivel', 'qtd_perguntas'));
+    public function home(Request $request){
+        $nivel = $request->nivel;
+        $tema = $request->tema;
+        return view('home', compact('nivel', 'tema'));
     }
 
     public function index(){
-    	$questions = \App\Question::orderBy('id', 'desc')->get();
+    	$questions = \App\Question::orderBy('tema')->orderBy('id', 'desc')->get();        
     	return view('question.index', compact('questions'));
     }
 
     public function create(){
-    	return view('question.create');
+        $temas = \App\Tema::all();
+    	return view('question.create', compact('temas'));
     }
 
     public function store(Request $request){
     	$question = new \App\Question();
+        $question->nivel = $request->nivel;
+        $question->tema = $request->tema;
+        $tema = \App\Tema::where('tema', $request->tema)->first();
+        //caso o tema não exista, cria no banco de dados
+        if($tema == NULL){
+            $tema = new \App\Tema();
+            $tema->tema = $request->tema;
+            $tema->save();
+        }
     	$question->question = $request->question;
     	$question->option_a = $request->option_a;
     	$question->option_b = $request->option_b;
@@ -45,11 +54,21 @@ class QuestionController extends Controller
 
     public function edit($id){
     	$question = \App\Question::findOrfail($id);
-    	return view('question.edit', compact('question'));
+        $temas = \App\Tema::all();
+    	return view('question.edit', compact('question', 'temas'));
     }
 
     public function update($id, Request $request){
     	$question = \App\Question::findOrfail($id);
+        $question->nivel = $request->nivel;
+        $question->tema = $request->tema;
+        $tema = \App\Tema::where('tema', $request->tema)->first();
+        //caso o tema não exista, cria no banco de dados
+        if($tema == NULL){
+            $tema = new \App\Tema();
+            $tema->tema = $request->tema;
+            $tema->save();
+        }
     	$question->question = $request->question;
     	$question->option_a = $request->option_a;
     	$question->option_b = $request->option_b;
@@ -69,17 +88,27 @@ class QuestionController extends Controller
     	return redirect('question')->with('success', 'Questão removida com sucesso!');
     }
 
-    public function lottery(Request $request){
-        $maior = \App\Question::max('id');
-        $id = 0;
-        $question = NULL;
-        while ($id == 0) {
-           	$id = rand(1, $maior);
-            $question = $question = \App\Question::where('id', $id)->first();
-            if($question == NULL)
-            	$id = 0;
+    public function lottery($nivel, $tema){
+        $question = \App\Question::where([['respondida', '0'], ['nivel', $nivel], ['tema', $tema]])->inRandomOrder()->first();
+        if($question != NULL){
+            $question->respondida = 1;
+            $question->save();            
         }
+        return Response::json($question);
+    }
 
-        return Response::json($question);     
+    public function reset(){
+        $questions = \App\Question::all();
+        foreach ($questions as $question) {
+            if($question->respondida == 1){
+                $question->respondida = 0;
+                $question->save();
+            }
+
+        }
+    }
+
+    public function winner(){
+        return view('winner');
     }
 }

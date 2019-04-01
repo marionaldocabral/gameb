@@ -11,18 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', '\App\Http\Controllers\QuestionController@welcome');
 
 Route::get('/home', function () {
     return view('home');
 });
 
 Route::group(['middleware'=> 'web'],function(){
-	Route::get('home/child','\App\Http\Controllers\QuestionController@home_child');
-	Route::get('home/adult','\App\Http\Controllers\QuestionController@home_adult');
-	Route::post('question/lottery','\App\Http\Controllers\QuestionController@answer');
-	Route::get('question/lottery','\App\Http\Controllers\QuestionController@lottery');
+	Route::post('home','\App\Http\Controllers\QuestionController@home');
+	Route::get('question/reset','\App\Http\Controllers\QuestionController@reset');
+	Route::get('home/winner','\App\Http\Controllers\QuestionController@winner');
+	Route::get('question/{nivel}/lottery/{tema}','\App\Http\Controllers\QuestionController@lottery');
   	Route::resource('question','\App\Http\Controllers\QuestionController');
 });
+
+Route::resource('tema','\App\Http\Controllers\TemaController');
