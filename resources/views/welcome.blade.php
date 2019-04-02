@@ -96,7 +96,7 @@
                             Vamos lá!
                         </button>
                     @else
-                        <button type="submit" style="margin-top: 20px; background: none; border: none; color: gray; font-size: 2em; cursor: pointer; text-transform: uppercase; font-style: italic; font-family: sans-serif;" disabled>
+                        <button type="submit" style="margin-top: 20px; background: none; border: none; color: gray; font-size: 2em; cursor: pointer; text-transform: uppercase; font-style: italic; font-family: sans-serif;">
                             Vamos lá!
                         </button>
                     @endif

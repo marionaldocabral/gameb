@@ -77,10 +77,7 @@
                     <a href="/" style="text-decoration: none;">De novo!</a>
                 </div>
             </div>
-            <audio id="audio" autoplay>
-                <source src="{!! url('win.mp3') !!}" type="audio/mp3">
-                Seu navegador não suporta o elemento audio.             
-            </audio>
+            <iframe src="{!! url('win.ogg') !!}" allow="autoplay" style="display:none" id="iframeAudio"></iframe>
         </div>
     </body>
 </html>
